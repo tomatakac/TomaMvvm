@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Prism.Mvvm;
+﻿using Dal;
+using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Unity;
 using MvvmExampleToma.Models;
 using System;
@@ -21,7 +22,8 @@ namespace MvvmExampleToma
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            _container.RegisterType<IMerge, Merge>();
+            _container.RegisterType<IRepository, Repository>(new PerResolveLifetimeManager());
+            _container.RegisterType<InvoiceMgrEntities>(new PerResolveLifetimeManager());
             ViewModelLocationProvider.SetDefaultViewModelFactory((type) => _container.Resolve(type));
         }
     }

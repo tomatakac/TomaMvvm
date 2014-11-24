@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="InvoiceManagerModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="InvoiceManagerModelStoreContainer">
+    <EntitySet Name="Customer" EntityType="InvoiceManagerModel.Store.Customer" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CustomerItem" EntityType="InvoiceManagerModel.Store.CustomerItem" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Item" EntityType="InvoiceManagerModel.Store.Item" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Transaction" EntityType="InvoiceManagerModel.Store.Transaction" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_CustomerItem_Customer" Association="InvoiceManagerModel.Store.FK_CustomerItem_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="CustomerItem" EntitySet="CustomerItem" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CustomerItem_Item" Association="InvoiceManagerModel.Store.FK_CustomerItem_Item">
+      <End Role="Item" EntitySet="Item" />
+      <End Role="CustomerItem" EntitySet="CustomerItem" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CustomerItem_Transaction" Association="InvoiceManagerModel.Store.FK_CustomerItem_Transaction">
+      <End Role="Transaction" EntitySet="Transaction" />
+      <End Role="CustomerItem" EntitySet="CustomerItem" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar" Nullable="false" MaxLength="200" />
+    <Property Name="PIB" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Address" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CustomerItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="ItemId" Type="int" Nullable="false" />
+    <Property Name="TransactionId" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Price" Type="decimal" Nullable="false" Scale="2" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Transaction">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="DateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_CustomerItem_Customer">
+    <End Role="Customer" Type="InvoiceManagerModel.Store.Customer" Multiplicity="1" />
+    <End Role="CustomerItem" Type="InvoiceManagerModel.Store.CustomerItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CustomerItem">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CustomerItem_Item">
+    <End Role="Item" Type="InvoiceManagerModel.Store.Item" Multiplicity="1" />
+    <End Role="CustomerItem" Type="InvoiceManagerModel.Store.CustomerItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CustomerItem">
+        <PropertyRef Name="ItemId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CustomerItem_Transaction">
+    <End Role="Transaction" Type="InvoiceManagerModel.Store.Transaction" Multiplicity="1" />
+    <End Role="CustomerItem" Type="InvoiceManagerModel.Store.CustomerItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Transaction">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CustomerItem">
+        <PropertyRef Name="TransactionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace MvvmExampleToma.Models
 {
-    public class Merge : IMerge
+    public class ItemModel
     {
-        public string Marge(int number)
-        {
-            return String.Format("Some number: {0}", number.ToString());
-        }
+        public int Id { get; set; }
+        public String Name { get; set; }
+        public decimal Price { get; set; }
     }
 }

@@ -1,0 +1,7 @@
+E:\WorkWpf\TomaMvvm\TomaMvvm\MvvmExampleToma\Dal\bin\Debug\Dal.dll.config
+E:\WorkWpf\TomaMvvm\TomaMvvm\MvvmExampleToma\Dal\bin\Debug\Dal.dll
+E:\WorkWpf\TomaMvvm\TomaMvvm\MvvmExampleToma\Dal\bin\Debug\Dal.pdb
+E:\WorkWpf\TomaMvvm\TomaMvvm\MvvmExampleToma\Dal\bin\Debug\EntityFramework.dll
+E:\WorkWpf\TomaMvvm\TomaMvvm\MvvmExampleToma\Dal\bin\Debug\EntityFramework.xml
+E:\WorkWpf\TomaMvvm\TomaMvvm\MvvmExampleToma\Dal\obj\Debug\Dal.dll
+E:\WorkWpf\TomaMvvm\TomaMvvm\MvvmExampleToma\Dal\obj\Debug\Dal.pdb

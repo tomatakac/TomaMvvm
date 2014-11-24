@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace MvvmExampleToma.Models
 {
-    public interface IMerge
+    public class CustomerModel
     {
-        string Marge(int number);
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

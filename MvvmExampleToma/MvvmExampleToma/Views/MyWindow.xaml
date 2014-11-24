@@ -43,21 +43,28 @@
                         <Label  Margin="0,0,0,20" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center">Create Customer</Label>
                         <StackPanel Margin="60, 0, 0, 5" Orientation="Horizontal">
                             <Label>Name</Label>
-                            <TextBox Name="NameTextBox" Margin="83, 0, 0, 0" VerticalAlignment="Center" Width="100" />
+                            <TextBox Name="NameTextBox" Margin="83, 0, 0, 0" VerticalAlignment="Center" Width="100" Text="{Binding Customer.Name}" />
                         </StackPanel>
                         <StackPanel Margin="60, 0, 0, 5" Orientation="Horizontal">
                             <Label>Description</Label>
-                            <TextBox Name="DescriptionTextBox" Margin="55, 0, 0, 0" VerticalAlignment="Center" Width="100"/>
+                            <TextBox Name="DescriptionTextBox" Margin="55, 0, 0, 0"  Text="{Binding Customer.Description}" VerticalAlignment="Center" Width="100"/>
                         </StackPanel>
                         <StackPanel Margin="60, 0, 0, 5" Orientation="Horizontal">
                             <Label>PIB</Label>
-                            <TextBox Name="PibTextBox" Margin="98, 0, 0, 0" Width="100" VerticalAlignment="Center"/>
+                            <TextBox Name="PibTextBox" Margin="98, 0, 0, 0" Width="100" VerticalAlignment="Center"  Text="{Binding Customer.Pib}"/>
                         </StackPanel>
                         <StackPanel Margin="60, 0, 0, 5" Orientation="Horizontal">
                             <Label>Address</Label>
-                            <TextBox Name="AddressTextBox" Margin="72, 0, 0, 0" Width="100" VerticalAlignment="Center"/>
+                            <TextBox Name="AddressTextBox" Margin="72, 0, 0, 0" Width="100" VerticalAlignment="Center"  Text="{Binding Customer.Address}"/>
                         </StackPanel>
-                        <Button Command="{Binding ConvertTextCommand}" Margin="5" Width="200">Save</Button>
+                        <Button Margin="5" Width="200">Save
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <prism:InvokeCommandAction Command="{Binding SaveCustomerCommand}"  />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                        <TextBlock Name="StatusTextBox" Margin="5" Foreground="Red" HorizontalAlignment="Center" Text="{Binding CreateCustomerStatus}"/>
                     </StackPanel>
                 </Grid>
                 <Grid x:Name="ItemGrid" Height="496" Width="916" Visibility="Collapsed">
@@ -65,17 +72,24 @@
                         <Label  Margin="0,0,0,20" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center">Create Item</Label>
                         <StackPanel Margin="60, 0, 0, 5" Orientation="Horizontal">
                             <Label>Name</Label>
-                            <TextBox Name="ItemNameTextBox" Margin="83, 0, 0, 0" VerticalAlignment="Center" Width="100" />
+                            <TextBox Name="ItemNameTextBox" Margin="83, 0, 0, 0" VerticalAlignment="Center" Width="100" Text="{Binding Item.Name}" />
                         </StackPanel>
                         <StackPanel Margin="60, 0, 0, 5" Orientation="Horizontal">
                             <Label>Description</Label>
-                            <TextBox Name="ItemDescriptionTextBox" Margin="55, 0, 0, 0" VerticalAlignment="Center" Width="100"/>
+                            <TextBox Name="ItemDescriptionTextBox" Margin="55, 0, 0, 0" VerticalAlignment="Center" Width="100" Text="{Binding Item.Description}"/>
                         </StackPanel>
                         <StackPanel Margin="60, 0, 0, 5" Orientation="Horizontal">
                             <Label>Price</Label>
-                            <TextBox Name="PriceTextBox" Margin="89, 0, 0, 0" Width="100" VerticalAlignment="Center"/>
+                            <TextBox Name="PriceTextBox" Margin="89, 0, 0, 0" Width="100" VerticalAlignment="Center" Text="{Binding Item.Price}"/>
                         </StackPanel>
-                        <Button Command="{Binding ConvertTextCommand}" Margin="5" Width="200">Save</Button>
+                        <Button  Margin="5" Width="200">Save
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <prism:InvokeCommandAction Command="{Binding SaveItemCommand}"  />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                        <TextBlock Name="ItemStatusTextBox" Margin="5" Foreground="Red" HorizontalAlignment="Center" Text="{Binding CreateItemStatus}"/>
                     </StackPanel>
                 </Grid>
                 <Grid x:Name="InvoiceGrid" Height="496" Width="916" Visibility="Collapsed">
@@ -83,14 +97,20 @@
                         <Label  Margin="0,0,0,20" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center">Create Invoice</Label>
                         <StackPanel Margin="60, 0, 0, 5" Orientation="Horizontal">
                             <Label VerticalAlignment="Top">Items</Label>
-                            <ComboBox Name="itemsComboBox" ItemsSource="{Binding Items}" Margin="58, 0, 0, 0" VerticalAlignment="Top" Width="150">
+                            <ComboBox Name="itemsComboBox" ItemsSource="{Binding Path=Items}" DisplayMemberPath="Name" Margin="58, 0, 0, 0" VerticalAlignment="Top" Width="150">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
                                         <prism:InvokeCommandAction Command="{Binding SelectItemCommand}" TriggerParameterPath="AddedItems" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </ComboBox>
-                            <dxe:SpinEdit Value="1" Margin="20, 0, 0, 0" VerticalAlignment="Top" ></dxe:SpinEdit>
+                           <dxe:SpinEdit Value="1" Margin="20, 0, 0, 0" VerticalAlignment="Top" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="EditValueChanged">
+                                        <prism:InvokeCommandAction Command="{Binding SpinEditValueChanged}" TriggerParameterPath="NewValue"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </dxe:SpinEdit>
                             <Button Command="{Binding ConvertTextCommand}" Margin="20, 0, 0, 0" Width="50" VerticalAlignment="Top">
                                 Add
                                 <i:Interaction.Triggers>
@@ -99,17 +119,30 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
-                            <ListBox Name="ItemsListBox" Margin="20, 0, 0, 0" ItemsSource="{Binding ListBoxItems}" Width="200" Height="150" VerticalAlignment="Top"/>                            
+                            <ListBox Name="ItemsListBox" Margin="20, 0, 0, 0" ItemsSource="{Binding Path=ListBoxItems}" DisplayMemberPath="OrderDetail" Width="200" Height="150" VerticalAlignment="Top"/>                            
                         </StackPanel>
                         <StackPanel Margin="60, 0, 0, 5" Orientation="Horizontal">
                             <Label>Customers</Label>
-                            <ComboBox Name="CustomersComboBox" ItemsSource="{Binding Customers}" Margin="30, 0, 0, 0" VerticalAlignment="Top" Width="150"/>
+                            <ComboBox Name="CustomersComboBox" ItemsSource="{Binding Customers}" DisplayMemberPath="Name" Margin="30, 0, 0, 0" VerticalAlignment="Top" Width="150">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <prism:InvokeCommandAction Command="{Binding SelectCustomerCommand}" TriggerParameterPath="AddedItems" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
                         </StackPanel>
                         <StackPanel Margin="60, 0, 0, 5" Orientation="Horizontal">
                             <Label>Price</Label>
-                            <TextBlock Margin="58,6,0,0" Text="{Binding SelectedItem}" />
+                            <TextBlock Margin="58,6,0,0" Text="{Binding OrderPrice}" />
                         </StackPanel>
-                        <Button Command="{Binding ConvertTextCommand}" Margin="5" Width="200">Save</Button>
+                        <Button Command="{Binding ConvertTextCommand}" Margin="5" Width="200">Save
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <prism:InvokeCommandAction Command="{Binding SaveInvoiceCommand}"  />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                        <TextBlock Name="InvoiceStatusTextBox" Margin="5" Foreground="Red" HorizontalAlignment="Center" Text="{Binding CreateInvoiceStatus}"/>
                     </StackPanel>
                 </Grid>
             </DockPanel>

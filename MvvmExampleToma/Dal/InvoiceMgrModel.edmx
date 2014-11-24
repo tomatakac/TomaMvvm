@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="InvoiceManagerModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="InvoiceManagerModelStoreContainer">
+          <EntitySet Name="Customer" EntityType="InvoiceManagerModel.Store.Customer" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CustomerItem" EntityType="InvoiceManagerModel.Store.CustomerItem" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Item" EntityType="InvoiceManagerModel.Store.Item" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Transaction" EntityType="InvoiceManagerModel.Store.Transaction" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_CustomerItem_Customer" Association="InvoiceManagerModel.Store.FK_CustomerItem_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="CustomerItem" EntitySet="CustomerItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerItem_Item" Association="InvoiceManagerModel.Store.FK_CustomerItem_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="CustomerItem" EntitySet="CustomerItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerItem_Transaction" Association="InvoiceManagerModel.Store.FK_CustomerItem_Transaction">
+            <End Role="Transaction" EntitySet="Transaction" />
+            <End Role="CustomerItem" EntitySet="CustomerItem" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="PIB" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="TransactionId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Price" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CustomerItem_Customer">
+          <End Role="Customer" Type="InvoiceManagerModel.Store.Customer" Multiplicity="1" />
+          <End Role="CustomerItem" Type="InvoiceManagerModel.Store.CustomerItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CustomerItem">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerItem_Item">
+          <End Role="Item" Type="InvoiceManagerModel.Store.Item" Multiplicity="1" />
+          <End Role="CustomerItem" Type="InvoiceManagerModel.Store.CustomerItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CustomerItem">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerItem_Transaction">
+          <End Role="Transaction" Type="InvoiceManagerModel.Store.Transaction" Multiplicity="1" />
+          <End Role="CustomerItem" Type="InvoiceManagerModel.Store.CustomerItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transaction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CustomerItem">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="InvoiceManagerModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="InvoiceMgrEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="InvoiceManagerModel.Customer" />
+          <EntitySet Name="Items" EntityType="InvoiceManagerModel.Item" />
+          <EntitySet Name="Transactions" EntityType="InvoiceManagerModel.Transaction" />
+          <EntitySet Name="CustomerItems" EntityType="InvoiceManagerModel.CustomerItem" />
+          <AssociationSet Name="FK_CustomerItem_Customer" Association="InvoiceManagerModel.FK_CustomerItem_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomerItem" EntitySet="CustomerItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerItem_Item" Association="InvoiceManagerModel.FK_CustomerItem_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="CustomerItem" EntitySet="CustomerItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerItem_Transaction" Association="InvoiceManagerModel.FK_CustomerItem_Transaction">
+            <End Role="Transaction" EntitySet="Transactions" />
+            <End Role="CustomerItem" EntitySet="CustomerItems" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="PIB" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="Address" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="CustomerItems" Relationship="InvoiceManagerModel.FK_CustomerItem_Customer" FromRole="Customer" ToRole="CustomerItem" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CustomerItems" Relationship="InvoiceManagerModel.FK_CustomerItem_Item" FromRole="Item" ToRole="CustomerItem" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="CustomerItems" Relationship="InvoiceManagerModel.FK_CustomerItem_Transaction" FromRole="Transaction" ToRole="CustomerItem" />
+        </EntityType>
+        <EntityType Name="CustomerItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="CustomerId" Nullable="false" />
+          <Property Type="Int32" Name="ItemId" Nullable="false" />
+          <Property Type="Int32" Name="TransactionId" Nullable="false" />
+          <Property Type="Int32" Name="Amount" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="InvoiceManagerModel.FK_CustomerItem_Customer" FromRole="CustomerItem" ToRole="Customer" />
+          <NavigationProperty Name="Item" Relationship="InvoiceManagerModel.FK_CustomerItem_Item" FromRole="CustomerItem" ToRole="Item" />
+          <NavigationProperty Name="Transaction" Relationship="InvoiceManagerModel.FK_CustomerItem_Transaction" FromRole="CustomerItem" ToRole="Transaction" />
+        </EntityType>
+        <Association Name="FK_CustomerItem_Customer">
+          <End Type="InvoiceManagerModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="InvoiceManagerModel.CustomerItem" Role="CustomerItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CustomerItem">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerItem_Item">
+          <End Type="InvoiceManagerModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="InvoiceManagerModel.CustomerItem" Role="CustomerItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CustomerItem">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerItem_Transaction">
+          <End Type="InvoiceManagerModel.Transaction" Role="Transaction" Multiplicity="1" />
+          <End Type="InvoiceManagerModel.CustomerItem" Role="CustomerItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transaction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CustomerItem">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="InvoiceManagerModelStoreContainer" CdmEntityContainer="InvoiceMgrEntities">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="InvoiceManagerModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PIB" ColumnName="PIB" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="InvoiceManagerModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="InvoiceManagerModel.Transaction">
+              <MappingFragment StoreEntitySet="Transaction">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerItems">
+            <EntityTypeMapping TypeName="InvoiceManagerModel.CustomerItem">
+              <MappingFragment StoreEntitySet="CustomerItem">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
