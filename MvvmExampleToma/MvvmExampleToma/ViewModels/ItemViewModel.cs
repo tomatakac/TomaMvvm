@@ -11,7 +11,7 @@ namespace MvvmExampleToma.ViewModels
     {
         private string _name;
         private string _description;
-        private decimal _price;
+        private decimal? _price;
 
         public string Name
         {
@@ -37,7 +37,7 @@ namespace MvvmExampleToma.ViewModels
             }
         }
 
-        public decimal Price
+        public decimal? Price
         {
             get
             {

@@ -42,12 +42,20 @@ namespace MvvmExampleToma.Views
             SetGridVisibilityToColapsed();
             InvoiceGrid.Visibility = System.Windows.Visibility.Visible;
         }
+        
+        private void overviewBarButtonItem_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            SetGridVisibilityToColapsed();
+            InvoiceOverviewGrid.Visibility = System.Windows.Visibility.Visible;
+        }
 
         private void SetGridVisibilityToColapsed()
         {
             CustomerGrid.Visibility = System.Windows.Visibility.Collapsed;
             ItemGrid.Visibility = System.Windows.Visibility.Collapsed;
-            InvoiceGrid.Visibility = System.Windows.Visibility.Collapsed; 
-        }          
+            InvoiceGrid.Visibility = System.Windows.Visibility.Collapsed;
+            InvoiceOverviewGrid.Visibility = System.Windows.Visibility.Collapsed;
+        }
+
     }
 }

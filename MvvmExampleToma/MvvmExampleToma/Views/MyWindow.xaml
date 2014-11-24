@@ -17,10 +17,11 @@
                 <dxb:BarButtonItem x:Name="barButtonItem2" Content="Invoice" LargeGlyph="pack://application:,,,/DevExpress.Images.v13.1;component/Images/Support/Template_32x32.png" RibbonStyle="Large"/>
                 <dxb:BarButtonItem x:Name="Invoice" Content="Invoice"/>
                 <dxb:BarButtonItem x:Name="invoiceBarButtonItem" Content="Invoice" LargeGlyph="pack://application:,,,/DevExpress.Images.v13.1;component/Images/Support/Template_32x32.png" RibbonStyle="Large" ItemClick="invoiceBarButtonItem_ItemClick"/>
+                <dxb:BarButtonItem x:Name="overviewBarButtonItem" Content="InvoiceOverview" Glyph="pack://application:,,,/DevExpress.Images.v13.1;component/Images/Support/Template_32x32.png" RibbonStyle="Large" ItemClick="overviewBarButtonItem_ItemClick"/>
             </dxb:BarManager.Items>
             <DockPanel>
 
-                <dxr:RibbonControl DockPanel.Dock="Top">
+                <dxr:RibbonControl DockPanel.Dock="Top" Height="122">
                     <dxr:RibbonDefaultPageCategory Caption="defaultCategory">
                         <dxr:RibbonPage Caption="Home">
                             <dxr:RibbonPageGroup Caption="Tools"/>
@@ -32,6 +33,9 @@
                             </dxr:RibbonPageGroup>
                             <dxr:RibbonPageGroup Caption="">
                                 <dxb:BarButtonItemLink BarItemName="invoiceBarButtonItem"/>
+                            </dxr:RibbonPageGroup>
+                            <dxr:RibbonPageGroup Caption="Ribbon Page Group" ShowCaptionButton="True">
+                                <dxb:BarButtonItemLink BarItemName="overviewBarButtonItem"/>
                             </dxr:RibbonPageGroup>
                         </dxr:RibbonPage>
                     </dxr:RibbonDefaultPageCategory>
@@ -104,7 +108,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </ComboBox>
-                           <dxe:SpinEdit Value="1" Margin="20, 0, 0, 0" VerticalAlignment="Top" >
+                            <dxe:SpinEdit Value="{Binding SpinEditValue}" Margin="20, 0, 0, 0" VerticalAlignment="Top" >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="EditValueChanged">
                                         <prism:InvokeCommandAction Command="{Binding SpinEditValueChanged}" TriggerParameterPath="NewValue"/>
@@ -119,7 +123,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </Button>
-                            <ListBox Name="ItemsListBox" Margin="20, 0, 0, 0" ItemsSource="{Binding Path=ListBoxItems}" DisplayMemberPath="OrderDetail" Width="200" Height="150" VerticalAlignment="Top"/>                            
+                            <ListBox Name="ItemsListBox" Margin="20, 0, 0, 0" ItemsSource="{Binding Path=ListBoxItems}" DisplayMemberPath="OrderDetail" Width="200" Height="150" VerticalAlignment="Top"/>
                         </StackPanel>
                         <StackPanel Margin="60, 0, 0, 5" Orientation="Horizontal">
                             <Label>Customers</Label>
@@ -143,6 +147,41 @@
                             </i:Interaction.Triggers>
                         </Button>
                         <TextBlock Name="InvoiceStatusTextBox" Margin="5" Foreground="Red" HorizontalAlignment="Center" Text="{Binding CreateInvoiceStatus}"/>
+                    </StackPanel>
+                </Grid>
+                <Grid x:Name="InvoiceOverviewGrid" Height="496" Width="916" Visibility="Collapsed">
+                    <StackPanel Height="336">
+                        <Label  Margin="0,0,0,20" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center">Search for Invoice</Label>
+                        <StackPanel Margin="60, 0, 0, 5" Orientation="Horizontal">
+                            <Label VerticalAlignment="Top">DateFrom</Label>
+                            <DatePicker VerticalAlignment="Top"></DatePicker>
+                            <Label VerticalAlignment="Top" Margin="30,0,0,0">DateTo</Label>
+                            <DatePicker VerticalAlignment="Top"></DatePicker>
+                            <Button Command="{Binding ConvertTextCommand}" VerticalAlignment="Center" Width="100" Margin="10, 0,0,0">Filter
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <prism:InvokeCommandAction Command="{Binding SaveInvoiceCommand}"  />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <ListBox Name="overviewListBox" ItemsSource="{Binding Path=Items}" DisplayMemberPath="Name" Margin="58, 0, 0, 0" VerticalAlignment="Top" Width="150">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <prism:InvokeCommandAction Command="{Binding SelectItemCommand}" TriggerParameterPath="AddedItems" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ListBox>                            
+                        </StackPanel>
+                        <StackPanel Margin="60, 0, 0, 5" Orientation="Horizontal">
+                            <Label>Customers</Label>
+                            <ComboBox Name="CustomerComboBox" ItemsSource="{Binding Customers}" DisplayMemberPath="Name" Margin="30, 0, 0, 0" VerticalAlignment="Top" Width="150">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <prism:InvokeCommandAction Command="{Binding SelectCustomerCommand}" TriggerParameterPath="AddedItems" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </DockPanel>

@@ -5,6 +5,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MvvmExampleToma.ViewModels
 {
@@ -22,9 +24,8 @@ namespace MvvmExampleToma.ViewModels
         private string _createItemStatus;
         private string _createInvoiceStatus;
         private ItemViewModel _item = new ItemViewModel();
-        private int _spinEditValue;
-        private decimal _orderPrice;
-
+        private int _spinEditValue = 1;
+        private decimal? _orderPrice;
         public string CreateInvoiceStatus
         {
             get
@@ -37,7 +38,7 @@ namespace MvvmExampleToma.ViewModels
             } 
         }
 
-        public decimal OrderPrice
+        public decimal? OrderPrice
         {
             get
             {
@@ -189,6 +190,11 @@ namespace MvvmExampleToma.ViewModels
             ListBoxItems = new ObservableCollection<ItemOrder>();
             SelectedCustomer = new CustomerModel();
             CreateInvoiceStatus = SuccessMessage;
+            Items = _repo.RetrieveItems();
+            Customers = _repo.RetrieveCustomers();
+            SpinEditValue = 1;
+            OrderPrice = null;
+            MessageDelay();
         }
 
         private void SelectCustomer(object[] customers)
@@ -213,14 +219,24 @@ namespace MvvmExampleToma.ViewModels
             Item = new ItemViewModel();
             CreateItemStatus = SuccessMessage;
             Items = _repo.RetrieveItems();
+            MessageDelay();
         }
 
         private void SaveCustomer()
         {
-            //_repo.AddCustomer(Customer);
+            _repo.AddCustomer(Customer);
             Customer = new CustomerViewModel();
             CreateCustomerStatus = SuccessMessage;
             Customers = _repo.RetrieveCustomers();
+            MessageDelay();
+        }
+
+        private async void MessageDelay()
+        {
+            await Task.Delay(3000);
+            CreateInvoiceStatus = String.Empty;
+            CreateItemStatus = String.Empty;
+            CreateCustomerStatus = String.Empty;
         }
 
         private void AddItem()
@@ -228,7 +244,7 @@ namespace MvvmExampleToma.ViewModels
             SelectedItem.Amount = SpinEditValue;
             ListBoxItems.Add(SelectedItem);
 
-            OrderPrice = ListBoxItems.Sum(x => x.Price * x.Amount);
+            OrderPrice = ListBoxItems.Sum(x => x.Price * x.Amount) ?? 0;
         }
 
         private void SelectItem(object[] items)

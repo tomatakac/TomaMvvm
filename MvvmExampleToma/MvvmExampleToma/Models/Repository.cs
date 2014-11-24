@@ -18,7 +18,7 @@ namespace MvvmExampleToma.Models
             _db = db;
         }
 
-        public void AddCustomer(CustomerViewModel customer)
+        public async void AddCustomer(CustomerViewModel customer)
         {
             var customerEntity = new Customer
             {
@@ -32,13 +32,13 @@ namespace MvvmExampleToma.Models
             _db.SaveChanges();
         }
 
-        public void AddItem(ItemViewModel item)
+        public async void AddItem(ItemViewModel item)
         {
             var itemEntity = new Item
             {
                 Name = item.Name,
                 Description = item.Description,
-                Price = item.Price,
+                Price = item.Price ?? 0,
                 CreatedOn = DateTime.Now
             };
             _db.Items.Add(itemEntity);
@@ -59,7 +59,7 @@ namespace MvvmExampleToma.Models
             return collection;
         }
 
-        public void SaveInvoice(ObservableCollection<ItemOrder> itemOrders, CustomerModel customerModel)
+        public async void SaveInvoice(ObservableCollection<ItemOrder> itemOrders, CustomerModel customerModel)
         {
             var transaction = new Transaction()
             {
