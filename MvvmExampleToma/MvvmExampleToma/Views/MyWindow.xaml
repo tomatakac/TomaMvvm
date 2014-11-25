@@ -7,6 +7,12 @@
         xmlns:mvvm="clr-namespace:Microsoft.Practices.Prism.Mvvm;assembly=Microsoft.Practices.Prism.Mvvm.Desktop"
         mvvm:ViewModelLocator.AutoWireViewModel="true"        
         Title="InvoiceManager" Height="827.6" Width="980" HorizontalAlignment="Center" VerticalAlignment="Center">
+    
+    <i:Interaction.Triggers>
+        <prism:InteractionRequestTrigger SourceObject="{Binding NotificationRequest}">
+            <prism:PopupWindowAction IsModal="True" CenterOverAssociatedObject="True" />
+        </prism:InteractionRequestTrigger>
+    </i:Interaction.Triggers>
 
     <Grid>
         <dxb:BarManager CreateStandardLayout="False">

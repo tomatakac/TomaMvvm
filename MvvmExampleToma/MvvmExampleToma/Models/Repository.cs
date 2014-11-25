@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace MvvmExampleToma.Models
 {
@@ -18,29 +19,30 @@ namespace MvvmExampleToma.Models
             _db = db;
         }
 
-        public async void AddCustomer(CustomerViewModel customer)
+        public void AddCustomer(CustomerViewModel customer)
         {
+
             var customerEntity = new Customer
-            {
-                Name = customer.Name,
-                Description = customer.Description,
-                PIB = customer.Pib,
-                Address = customer.Address,
-                CreatedOn = DateTime.Now
-            };
+                {
+                    Name = customer.Name,
+                    Description = customer.Description,
+                    PIB = customer.Pib,
+                    Address = customer.Address,
+                    CreatedOn = DateTime.Now
+                };
             _db.Customers.Add(customerEntity);
             _db.SaveChanges();
         }
 
-        public async void AddItem(ItemViewModel item)
+        public void AddItem(ItemViewModel item)
         {
             var itemEntity = new Item
-            {
-                Name = item.Name,
-                Description = item.Description,
-                Price = item.Price ?? 0,
-                CreatedOn = DateTime.Now
-            };
+                {
+                    Name = item.Name,
+                    Description = item.Description,
+                    Price = item.Price ?? 0,
+                    CreatedOn = DateTime.Now
+                };
             _db.Items.Add(itemEntity);
             _db.SaveChanges();
         }
@@ -97,15 +99,15 @@ namespace MvvmExampleToma.Models
                                                               }));
         }
 
-        public async void SaveInvoice(ObservableCollection<ItemOrder> itemOrders, CustomerModel customerModel)
+        public void SaveInvoice(ObservableCollection<ItemOrder> itemOrders, CustomerModel customerModel)
         {
             var transaction = new Transaction()
-            {
-                DateTime = DateTime.Now
-            };
+                {
+                    DateTime = DateTime.Now
+                };
             _db.Transactions.Add(transaction);
 
-            foreach(var itemOrder in itemOrders)
+            foreach (var itemOrder in itemOrders)
             {
                 var customer = _db.Customers.Single(x => x.Id == customerModel.Id);
                 var item = _db.Items.Single(x => x.Id == itemOrder.Id);

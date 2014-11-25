@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using MvvmExampleToma.Models;
 using System;
+using System.Windows.Input;
 
 namespace MvvmExampleToma.Models
 {

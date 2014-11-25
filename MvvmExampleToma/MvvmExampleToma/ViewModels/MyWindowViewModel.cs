@@ -7,12 +7,14 @@ using System.Windows.Input;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 
 namespace MvvmExampleToma.ViewModels
 {
     public class MyWindowViewModel : BindableBase
     {
         #region Private properties
+        public ICommand NotificationCommand { get; set; }
         private const string SuccessMessage = "Success!";
         private ObservableCollection<CustomerModel> _customers;
         private ObservableCollection<CustomerModel> _overviewCustomers;
@@ -34,9 +36,12 @@ namespace MvvmExampleToma.ViewModels
         private ObservableCollection<InvoiceDetailModel> _invoiceDetailModels;
         private InvoiceDetailModel _invoiceDetailModel;
         private ObservableCollection<InvoiceDetail> _invoiceDetails;
-        #endregion
+        #endregion               
 
         #region Public properties
+
+        public InteractionRequest<INotification> NotificationRequest { get; set; }
+
         public ObservableCollection<InvoiceDetail> InvoiceDetails
         {
             get
@@ -293,6 +298,13 @@ namespace MvvmExampleToma.ViewModels
             FilterCommand = new DelegateCommand(FilterCom);
             OverviewCustomerCommand = new DelegateCommand<Object[]>(OverviewCustomer);
             SelectInvoiceDetailCommand = new DelegateCommand<Object[]>(SelectInvoiceDetail);
+            NotificationRequest = new InteractionRequest<INotification>();
+            NotificationCommand = new DelegateCommand(RaiseNotification);
+        }
+
+        private void RaiseNotification()
+        {
+            NotificationRequest.Raise(new Notification{Content = "Error", Title="ErrorOccured"});
         }
         #endregion
 
@@ -331,15 +343,22 @@ namespace MvvmExampleToma.ViewModels
 
         private void SaveInvoice()
         {
-            _repo.SaveInvoice(ListBoxItems, SelectedCustomer);
-            ListBoxItems = new ObservableCollection<ItemOrder>();
-            SelectedCustomer = new CustomerModel();
-            CreateInvoiceStatus = SuccessMessage;
-            Items = _repo.RetrieveItems();
-            Customers = _repo.RetrieveCustomers();
-            SpinEditValue = 1;
-            OrderPrice = null;
-            MessageDelay();
+            try
+            {
+                _repo.SaveInvoice(ListBoxItems, SelectedCustomer);
+                ListBoxItems = new ObservableCollection<ItemOrder>();
+                SelectedCustomer = new CustomerModel();
+                CreateInvoiceStatus = SuccessMessage;
+                Items = _repo.RetrieveItems();
+                Customers = _repo.RetrieveCustomers();
+                SpinEditValue = 1;
+                OrderPrice = null;
+                MessageDelay();
+            }
+            catch (Exception ex)
+            {
+                NotificationCommand.Execute(null);
+            }
         }
 
         private void SelectCustomer(object[] customers)
@@ -360,21 +379,35 @@ namespace MvvmExampleToma.ViewModels
 
         private void SaveItem()
         {
-            _repo.AddItem(Item);
-            Item = new ItemViewModel();
-            CreateItemStatus = SuccessMessage;
-            Items = _repo.RetrieveItems();
-            MessageDelay();
+            try
+            {
+                _repo.AddItem(Item);
+                Item = new ItemViewModel();
+                CreateItemStatus = SuccessMessage;
+                Items = _repo.RetrieveItems();
+                MessageDelay();
+            }
+            catch (Exception ex)
+            {
+               NotificationCommand.Execute(null);
+            }
         }
 
         private void SaveCustomer()
         {
-            _repo.AddCustomer(Customer);
-            Customer = new CustomerViewModel();
-            CreateCustomerStatus = SuccessMessage;
-            Customers = _repo.RetrieveCustomers();
-            OverviewCustomers = _repo.RetrieveCustomers();
-            MessageDelay();
+            try
+            {
+                _repo.AddCustomer(Customer);
+                Customer = new CustomerViewModel();
+                CreateCustomerStatus = SuccessMessage;
+                Customers = _repo.RetrieveCustomers();
+                OverviewCustomers = _repo.RetrieveCustomers();
+                MessageDelay();
+            }
+            catch (Exception ex)
+            {
+                NotificationCommand.Execute(null);
+            }           
         }
 
         private async void MessageDelay()
