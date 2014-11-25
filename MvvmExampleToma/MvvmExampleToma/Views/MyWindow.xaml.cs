@@ -55,7 +55,11 @@ namespace MvvmExampleToma.Views
             ItemGrid.Visibility = System.Windows.Visibility.Collapsed;
             InvoiceGrid.Visibility = System.Windows.Visibility.Collapsed;
             InvoiceOverviewGrid.Visibility = System.Windows.Visibility.Collapsed;
-        }
+        }        
+
+        
+
+       
 
     }
 }

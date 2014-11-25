@@ -99,9 +99,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\CustomerModel.cs" />
+    <Compile Include="Models\InvoiceDetail.cs" />
     <Compile Include="Models\IRepository.cs" />
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\ItemOrder.cs" />
+    <Compile Include="Models\InvoiceDetailModel.cs" />
     <Compile Include="Models\Repository.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />

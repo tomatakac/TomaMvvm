@@ -59,6 +59,44 @@ namespace MvvmExampleToma.Models
             return collection;
         }
 
+        public ObservableCollection<InvoiceDetailModel> RetrieveInvoiceDetailModels(DateTime? from, DateTime? to, CustomerModel customer)
+        {
+            var invoiceDetailModels = new List<InvoiceDetailModel>();
+            var transactions = _db.Transactions.Where(x => x.DateTime >= from || x.DateTime <= to).ToList();            
+            foreach (var transaction in transactions)
+            {
+                var invoiceDetailModel = new InvoiceDetailModel
+                {
+                    TransactionId = transaction.Id,
+                    Customer = transaction.CustomerItems.First().Customer.Name,
+                    Date = transaction.DateTime,
+                    Price = transaction.CustomerItems.Sum(x => x.Amount * x.Item.Price)
+                };
+                if (customer == null)
+                {
+                    invoiceDetailModels.Add(invoiceDetailModel);
+                }
+                else if (customer.Id == transaction.CustomerItems.First().Customer.Id)
+                {
+                    invoiceDetailModels.Add(invoiceDetailModel);
+                }
+            }
+            return new ObservableCollection<InvoiceDetailModel>(invoiceDetailModels);
+        }
+
+        public ObservableCollection<InvoiceDetail> RetriveInvoiceDetail(InvoiceDetailModel invoiceDetail)
+        {
+            return new ObservableCollection<InvoiceDetail>(_db.CustomerItems
+                                                              .Where(x => x.TransactionId == invoiceDetail.TransactionId)
+                                                              .Select(x => new InvoiceDetail 
+                                                              {
+                                                                  CustomerName = x.Customer.Name,
+                                                                  ItemName = x.Item.Name,
+                                                                  ItemPrice = x.Item.Price,
+                                                                  Amount = x.Amount
+                                                              }));
+        }
+
         public async void SaveInvoice(ObservableCollection<ItemOrder> itemOrders, CustomerModel customerModel)
         {
             var transaction = new Transaction()
